@@ -99,8 +99,7 @@ router.get('/', (req, res) => {
     }
 
     // Customerni ismi orqali aniqlaymiz filter bilan
-    let list = DataBase.customers.filter(e => e.firstname.toLowerCase().includes(search.toLowerCase()))
-    // let list2 = DataBase.customers.filter(e => e.lastname.toLowerCase().includes(search.toLowerCase()))
+    let list = DataBase.customers.filter(e => (e.firstname + " " + e.lastname).toLowerCase().includes(search.toLowerCase()))
 
     if (list.length == 0) {
         res.status(404).send("Customers not found")
