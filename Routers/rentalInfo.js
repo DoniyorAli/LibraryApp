@@ -26,6 +26,17 @@ let DataBase = {
             created_at: "2022-04-26T09:08:12.000000Z",
             updated_at: "2022-05-26T09:08:18.000000Z"
         },
+        {
+            id: 3,
+            firstname: "Alex",
+            lastname: "bon",
+            email: "alex.bon@example.com",
+            phone: "+998987678954",
+            date_of_birth: "12-06-1999",
+            address: "221B shaker Street, London",  
+            created_at: "2022-04-26T09:08:12.000000Z",
+            updated_at: "2022-05-26T09:08:18.000000Z"
+        }
     ],
     books:[
         {
@@ -48,6 +59,18 @@ let DataBase = {
             description: "Sherlock Holmes is a fictional detective created by British author Sir Arthur Conan Doyle. Referring to himself as a in the stories, Holmes is known for his proficiency with observation, deduction, forensic science and logical reasoning that borders on the fantastic, which he employs when investigating cases for a wide variety of clients, including Scotland Yard.",
             author: "Arthur Conan Doyle",
             publish_year: 2006,
+            cover_photo_url: "https://images-na.ssl-images-amazon.com/images/I/91hJe52QzjL.jpg",
+            created_at: "2022-03-26T09:08:44.000000Z",
+            updated_at: "2022-03-26T09:08:44.000000Z"
+        },
+        {
+            id: 103,
+            isbn: "978-0393058001",
+            title: "Shermat Golmes",
+            gener: "fictional detective",
+            description: "Sherlock Holmes is a fictional detective created by British author Sir Arthur Conan Doyle. Referring to himself as a in the stories, Holmes is known for his proficiency with observation, deduction, forensic science and logical reasoning that borders on the fantastic, which he employs when investigating cases for a wide variety of clients, including Scotland Yard.",
+            author: "Arthur Conan Doyle",
+            publish_year: 2007,
             cover_photo_url: "https://images-na.ssl-images-amazon.com/images/I/91hJe52QzjL.jpg",
             created_at: "2022-03-26T09:08:44.000000Z",
             updated_at: "2022-03-26T09:08:44.000000Z"
@@ -144,6 +167,41 @@ router.put('/rental_info/:idc/:idb/returned', (req,res) => {
     foundCus.updated_at = new Date()
     foundCus.returned_day = new Date()
     res.status(200).send("Successfully updated")
+})
+//========================================================================
+
+// JOIN
+router.get('/rental_info/:idc', (req,res) => {
+    let reqCusId = parseInt(req.params.idc)
+
+    let customer = DataBase.customers.find(e => e.id == reqCusId)
+
+    if (!customer) {
+        res.status(400).send("The customer is not registered");
+        return
+    }
+
+    let rentalBook = DataBase.rental_info.filter(e => e.customer_id == reqCusId)
+
+    if (!rentalBook) {
+        res.status(400).send("Customer didn't have books");
+        return
+    }
+
+    let rentalBooksInfo = []
+
+    for (let i =0; i < rentalBook.length; i++) {
+        let element = rentalBook[i]
+        for (let j = 0; j < DataBase.books.length; j++) {
+            if (element.book_id == DataBase.books[j].id) {
+                element.book = DataBase.books[j]
+                rentalBooksInfo.push(element.book)
+                break
+            }
+        }
+    }
+
+    res.json({customer, rentalBooksInfo})
 })
 
 module.exports = router
