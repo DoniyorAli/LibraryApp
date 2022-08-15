@@ -76,7 +76,6 @@ console.log(!customer.firstname)
     }
  console.log(DataBase.customers[0])
     for (i = 0; i < DataBase.customers.length; i++) {
-//    console.log("=====>>>>>>")
         let element = DataBase.customers[i]
 
         if (customer.id == element.id) {
@@ -133,7 +132,6 @@ router.put('/:id', (req,res) => {
 
     for (let i = 0; i < DataBase.customers.length; i++) {
         const element = DataBase.customers[i];
-//        console.log("=====>>>>>>")
         if (element.id == id) {
             body.createAt = DataBase.customers[i].createAt
             body.updatedAt = new Date()

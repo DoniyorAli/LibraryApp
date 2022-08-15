@@ -9,8 +9,8 @@ app.get('/', (req,res) => {
     res.send("Server is running...")
 })
 
-const customerRouter = require('./Routers/customer')  // with filter cuutomers
-const bookRouter = require('./Routers/books')         // with filter books
+const customerRouter = require('./Routers/customer')  
+const bookRouter = require('./Routers/books')
 const infoRouter = require('./Routers/rentalInfo')
 
 app.use('/customer', customerRouter)
